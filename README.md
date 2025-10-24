@@ -19,7 +19,7 @@ A Nix flake for installing the [LeetGPU CLI](https://leetgpu.com) on NixOS and o
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
-    leetgpu.url = "github:yourusername/leetgpu_cli_nix";  # Update with your repo
+    leetgpu.url = "github:LukeTandjung/leetgpu_cli_nix";
   };
 }
 ```
@@ -30,7 +30,7 @@ A Nix flake for installing the [LeetGPU CLI](https://leetgpu.com) on NixOS and o
 { inputs, ... }:
 {
   imports = [ inputs.leetgpu.homeManagerModules.default ];
-  
+
   programs.leetgpu = {
     enable = true;
   };
@@ -88,14 +88,14 @@ This flake packages the LeetGPU CLI, which is proprietary software. See [LeetGPU
 
 ### `programs.leetgpu.enable`
 
-Type: `boolean`  
+Type: `boolean`
 Default: `false`
 
 Whether to enable the LeetGPU CLI.
 
 ### `programs.leetgpu.package`
 
-Type: `package`  
+Type: `package`
 Default: `self.packages.${system}.leetgpu_cli`
 
 The LeetGPU CLI package to use. Override this if you want to use a different version or build.
