@@ -68,9 +68,21 @@
       );
 
       homeManagerModules.default =
-        { pkgs, ... }:
+        { config, lib, pkgs, ... }:
         {
-          home.packages = [ self.packages.${pkgs.stdenv.hostPlatform.system}.leetgpu_cli ];
+          options.programs.leetgpu = {
+            enable = lib.mkEnableOption "LeetGPU CLI";
+
+            package = lib.mkOption {
+              type = lib.types.package;
+              default = self.packages.${pkgs.stdenv.hostPlatform.system}.leetgpu_cli;
+              description = "The leetgpu package to use";
+            };
+          };
+
+          config = lib.mkIf config.programs.leetgpu.enable {
+            home.packages = [ config.programs.leetgpu.package ];
+          };
         };
     };
 }
