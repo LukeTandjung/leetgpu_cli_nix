@@ -33,7 +33,10 @@
     in {
       packages = genAttrs (supported_systems) (system:
         let
-          pkgs = import nixpkgs { inherit system; };
+          pkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+          };
 
           inherit (pkgs) fetchUrl lib;
           inherit (pkgs.stdenv) mkDerivation;
