@@ -38,8 +38,8 @@
             config.allowUnfree = true;
           };
 
-          inherit (pkgs) fetchurl lib;
-          inherit (pkgs.stdenv) mkDerivation;
+          inherit (pkgs) fetchurl lib autoPatchelfHook;
+          inherit (pkgs.stdenv) mkDerivation isLinux;
         in {
           leetgpu_cli = mkDerivation {
             inherit version;
@@ -50,11 +50,17 @@
               sha256 = hashes.${system} or (throw "Unsupported system: ${system}");
             };
             dontUnpack = true;
+            nativeBuildInputs = lib.optionals isLinux [ autoPatchelfHook ];
+            buildInputs = lib.optionals isLinux [
+              pkgs.stdenv.cc.cc.lib
+            ];
+
             installPhase = ''
               mkdir -p "$out/bin"
               cp "$src" "$out/bin/leetgpu"
               chmod +x "$out/bin/leetgpu"
             '';
+
             meta = with lib; {
               description = "LeetGPU CLI";
               license = licenses.unfree;
