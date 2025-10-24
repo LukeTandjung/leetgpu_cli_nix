@@ -38,14 +38,14 @@
             config.allowUnfree = true;
           };
 
-          inherit (pkgs) fetchUrl lib;
+          inherit (pkgs) fetchurl lib;
           inherit (pkgs.stdenv) mkDerivation;
         in {
           leetgpu_cli = mkDerivation {
             inherit version;
 
             pname = "leetgpu_cli";
-            src = fetchUrl {
+            src = fetchurl {
               url = urls.${system} or (throw "Unsupported system: ${system}");
               sha256 = hashes.${system} or (throw "Unsupported system: ${system}");
             };
