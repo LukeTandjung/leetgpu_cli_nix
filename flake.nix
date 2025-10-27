@@ -12,6 +12,9 @@
       ...
     }:
     let
+      inherit (nixpkgs.lib) genAttrs;
+      inherit (builtins) filter hasAttr;
+
       version = "v1.0.0";
       urls = {
         "x86_64-linux" = "https://cli.leetgpu.com/dist/${version}/leetgpu-linux-amd64";
@@ -25,9 +28,7 @@
         "x86_64-darwin" = "sha256-HMP042zVK3DmVxHsPx/sgZr+0k5mFcJD6XiihLqN7wg=";
         "aarch64-darwin" = "sha256-jEiSHDsLopiYmdsXx36SJKxv1xEI2PRRI6H7ienCskU=";
       };
-      systems = nixpkgs.lib.systems.flakeExposed;
-
-      inherit (nixpkgs.lib) genAttrs;
+      systems = filter (system: hasAttr system urls) nixpkgs.lib.systems.flakeExposed;
     in {
       packages = genAttrs (systems) (system:
         let
