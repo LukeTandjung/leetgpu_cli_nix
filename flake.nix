@@ -3,14 +3,12 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    systems.url = "github:nix-systems/default";
   };
 
   outputs =
     inputs@{
       self,
       nixpkgs,
-      systems,
       ...
     }:
     let
@@ -27,11 +25,11 @@
         "x86_64-darwin" = "sha256-HMP042zVK3DmVxHsPx/sgZr+0k5mFcJD6XiihLqN7wg=";
         "aarch64-darwin" = "sha256-jEiSHDsLopiYmdsXx36SJKxv1xEI2PRRI6H7ienCskU=";
       };
-      supported_systems = import systems;
+      systems = nixpkgs.lib.systems.flakeExposed;
 
       inherit (nixpkgs.lib) genAttrs;
     in {
-      packages = genAttrs (supported_systems) (system:
+      packages = genAttrs (systems) (system:
         let
           pkgs = import nixpkgs {
             inherit system;
